@@ -1,0 +1,201 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #FFF9F0;
+    color: #455744;
+    min-height: 100vh;
+}
+
+.scanner-header {
+    background: #E7EDDF;
+    padding: 22px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 27px;
+    color: #607B58;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #607B58;
+    font-weight: 600;
+}
+
+.scanner-container {
+    max-width: 850px;
+    margin: 45px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.scanner-container h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.scanner-description {
+    color: #899383;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+.scanner-card {
+    background: white;
+    padding: 30px;
+    border-radius: 22px;
+    border: 1px solid #E7E9DF;
+    box-shadow: 0 8px 25px rgba(69, 87, 68, 0.07);
+}
+
+#reader {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+#reader video {
+    border-radius: 12px;
+}
+
+.scan-button {
+    background: #9CAF88;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 25px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 12px 5px;
+}
+
+.scan-button:hover {
+    background: #607B58;
+}
+
+.stop-button {
+    background: #BD7F8D;
+}
+
+.stop-button:hover {
+    background: #A96978;
+}
+
+.manual-input {
+    margin-top: 25px;
+    padding-top: 22px;
+    border-top: 1px solid #E7E9DF;
+}
+
+.manual-input input {
+    width: 100%;
+    max-width: 350px;
+    padding: 13px;
+    border: 1px solid #E7E9DF;
+    border-radius: 10px;
+    font-size: 15px;
+    margin: 12px 0;
+}
+
+#scanStatus {
+    margin-top: 18px;
+    color: #607B58;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .scanner-header {
+        padding: 18px 5%;
+    }
+
+    .scanner-container {
+        margin: 25px auto;
+    }
+
+    .scanner-container h1 {
+        font-size: 27px;
+    }
+
+    .scanner-card {
+        padding: 18px;
+    }
+}
+
+/* ===================================
+   FOODWISE - OCR EXPIRY SCANNER
+=================================== */
+
+.ocr-card {
+    margin-top: 30px;
+}
+
+.ocr-camera-container {
+    width: 100%;
+    max-width: 500px;
+    min-height: 220px;
+    margin: 20px auto;
+    background: #E7EDDF;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ocrVideo {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    display: block;
+}
+
+.ocr-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#ocrStatus {
+    margin-top: 18px;
+    color: #607B58;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.ocr-result {
+    margin-top: 18px;
+    padding: 15px;
+    background: #E7EDDF;
+    border-radius: 12px;
+    color: #455744;
+    line-height: 1.7;
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .ocr-buttons {
+        flex-direction: column;
+    }
+
+    .ocr-buttons .scan-button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

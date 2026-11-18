@@ -1,0 +1,155 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #FFF9F0;
+    color: #455744;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 950px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(69, 87, 68, 0.12);
+}
+
+.login-left {
+    background: #E7EDDF;
+    padding: 55px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.login-left h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    margin-bottom: 35px;
+}
+
+.login-left h2,
+.login-right h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 27px;
+    margin-bottom: 15px;
+}
+
+.login-left p {
+    line-height: 1.7;
+}
+
+.food-icons {
+    font-size: 35px;
+    margin: 35px 0;
+}
+
+.tagline {
+    color: #607B58;
+    font-weight: 700;
+}
+
+.login-right {
+    padding: 55px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-right > p {
+    color: #899383;
+    margin-bottom: 25px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin: 12px 0 8px;
+}
+
+input {
+    padding: 14px;
+    border: 1px solid #E7E9DF;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #9CAF88;
+}
+
+button {
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #9CAF88;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #607B58;
+}
+
+.register-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.register-text a {
+    color: #BD7F8D;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#loginMessage {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-left {
+        padding: 35px 20px;
+    }
+
+    .login-left h1 {
+        margin-bottom: 15px;
+    }
+
+    .food-icons {
+        margin: 20px 0;
+    }
+
+    .login-right {
+        padding: 35px 25px;
+    }
+}

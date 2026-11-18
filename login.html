@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodWise | Login</title>
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#9CAF88">
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-left">
+            <h1>FoodWise 🌿</h1>
+            <h2>Save Food. Save Money.</h2>
+            <p>Your kitchen's little helper for smarter food management.</p>
+            <div class="food-icons">🥑 🥕 🍅 🥬 🍋 🍓</div>
+            <p class="tagline">Fresh food, less waste!</p>
+        </div>
+
+        <div class="login-right">
+            <h2>Welcome Back!</h2>
+            <p>Login to your FoodWise account</p>
+
+            <form id="loginForm">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail"
+                    placeholder="Enter your email" required>
+
+                <label>Password</label>
+                <input type="password" id="loginPassword"
+                    placeholder="Enter your password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p id="loginMessage"></p>
+
+            <p class="register-text">
+                New to FoodWise?
+                <a href="./register.html">Create an account</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script type="module" src="./js/auth.js"></script>
+    <script src="./js/pwa.js"></script>
+</body>
+</html>

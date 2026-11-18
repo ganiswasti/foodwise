@@ -1,0 +1,29 @@
+
+{
+  "name": "FoodWise - Smart Food Management",
+  "short_name": "FoodWise",
+  "description": "Manage food inventory, track expiry dates and reduce food waste.",
+  "start_url": "./welcome.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF9F0",
+  "theme_color": "#9CAF88",
+  "categories": [
+    "food",
+    "lifestyle",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodWise - Smart Scanner</title>
+
+    <link rel="stylesheet" href="./css/scanner.css">
+
+    <!-- Barcode scanning library -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#9CAF88">
+</head>
+
+<body>
+
+    <header class="scanner-header">
+        <div class="logo">FoodWise ♡</div>
+        <a href="./index.html" class="back-link">← Back to Dashboard</a>
+    </header>
+
+    <main class="scanner-container">
+
+        <h1>Smart Food Scanner 🔍</h1>
+
+        <p class="scanner-description">
+            Scan a food barcode to automatically identify your product
+            and add it to your FoodWise inventory.
+        </p>
+
+        <section class="scanner-card">
+
+            <h2>Scan Your Food Product</h2>
+
+            <p class="scanner-description">
+                Place the barcode in front of your laptop camera.
+            </p>
+
+            <!-- Camera scanning area -->
+            <div id="reader"></div>
+
+            <div>
+                <button id="startScanBtn" class="scan-button">
+                    📷 Start Scanning
+                </button>
+
+                <button id="stopScanBtn" class="scan-button stop-button">
+                    Stop Scanning
+                </button>
+            </div>
+
+            <p id="scanStatus">
+                Ready to scan your food product!
+            </p>
+
+            <!-- Manual barcode entry -->
+            <div class="manual-input">
+
+                <h3>Or Enter Barcode Manually</h3>
+
+                <input
+                    type="text"
+                    id="manualBarcode"
+                    placeholder="Enter barcode number"
+                >
+
+                <button id="manualScanBtn" class="scan-button">
+                    Search Product
+                </button>
+
+            </div>
+
+        </section>
+
+<!-- EXPIRY DATE OCR SCANNER -->
+<section class="scanner-card ocr-card">
+
+    <h2>📅 AI Expiry Date Scanner</h2>
+
+    <p class="scanner-description">
+        Capture the expiry date printed on your food package.
+        FoodWise will read it automatically!
+    </p>
+
+    <div class="ocr-camera-container">
+        <video id="ocrVideo" autoplay playsinline></video>
+        <canvas id="ocrCanvas" hidden></canvas>
+    </div>
+
+    <div class="ocr-buttons">
+        <button id="startOcrCamera" class="scan-button">
+            📷 Open Camera
+        </button>
+
+        <button id="captureOcrImage" class="scan-button">
+            📸 Capture Date
+        </button>
+
+        <button id="stopOcrCamera" class="scan-button stop-button">
+            Stop Camera
+        </button>
+    </div>
+
+    <p id="ocrStatus">
+        Ready to scan an expiry date!
+    </p>
+
+    <div id="ocrResult" class="ocr-result"></div>
+
+</section>
+
+    </main>
+    <script src="./js/scanner.js"></script>
+    <script src="./js/pwa.js"></script>
+</body>
+</html>
