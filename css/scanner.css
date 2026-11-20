@@ -1,10 +1,12 @@
 
 /* ==========================================
-   FOODWISE - INTEGRATED SCANNER STYLES
+   FOODWISE - COMPLETE SMART SCANNER STYLES
    Sage Green | Vanilla Cream | Blush Pink
 ========================================== */
 
-/* SCANNER LAYOUT */
+/* ==========================================
+   ORIGINAL SCANNER STYLES
+========================================== */
 
 .scanner-container {
     width: 100%;
@@ -39,8 +41,7 @@
     margin-bottom: 25px;
 }
 
-
-/* BARCODE SCANNER */
+/* Original barcode scanner */
 
 #reader {
     width: 100%;
@@ -78,8 +79,7 @@
     max-width: 100%;
 }
 
-
-/* SCANNER BUTTONS */
+/* Scanner buttons */
 
 .scan-button {
     background: #9CAF88;
@@ -114,9 +114,6 @@
     background: #A96978;
 }
 
-
-/* BARCODE STATUS */
-
 #scanStatus {
     margin-top: 18px;
     color: #607B58;
@@ -125,8 +122,7 @@
     line-height: 1.6;
 }
 
-
-/* MANUAL BARCODE INPUT */
+/* Manual barcode input */
 
 .manual-input {
     margin-top: 25px;
@@ -157,8 +153,7 @@
     border-color: #9CAF88;
 }
 
-
-/* OCR EXPIRY SCANNER */
+/* Original OCR scanner */
 
 .ocr-card {
     margin-top: 0;
@@ -188,18 +183,12 @@
     display: none;
 }
 
-
-/* OCR BUTTONS */
-
 .ocr-buttons {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
 }
-
-
-/* OCR STATUS AND RESULTS */
 
 #ocrStatus {
     margin-top: 18px;
@@ -220,7 +209,453 @@
 }
 
 
-/* MOBILE RESPONSIVENESS */
+/* ==========================================
+   AI SMART SCAN - INTRODUCTION
+========================================== */
+
+.smart-scan-intro {
+    background: linear-gradient(
+        135deg,
+        #E7EDDF,
+        #FFF9F0,
+        #F5DDE1
+    );
+    border: 1px solid #E7E9DF;
+    border-radius: 22px;
+    padding: 28px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.smart-scan-intro h2 {
+    font-family: 'Playfair Display', serif;
+    color: #607B58;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.smart-scan-intro p {
+    color: #899383;
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 650px;
+    margin: auto;
+}
+
+
+/* ==========================================
+   SMART SCAN MODE SELECTOR
+========================================== */
+
+.smart-scan-modes {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.smart-mode-button {
+    flex: 1;
+    max-width: 260px;
+    min-width: 150px;
+    padding: 16px 20px;
+    border: 1px solid #E7E9DF;
+    border-radius: 15px;
+    background: #FFFFFF;
+    color: #607B58;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.smart-mode-button:hover {
+    background: #E7EDDF;
+    transform: translateY(-2px);
+}
+
+.smart-mode-button.active {
+    background: #607B58;
+    color: #FFFFFF;
+    border-color: #607B58;
+    box-shadow: 0 6px 18px rgba(96, 123, 88, 0.18);
+}
+
+
+/* ==========================================
+   SMART SCAN PANELS
+========================================== */
+
+.smart-scan-panel {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.smart-scan-card {
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 30px;
+    background: #FFFFFF;
+    border: 1px solid #E7E9DF;
+    border-radius: 22px;
+    box-shadow: 0 8px 25px rgba(69, 87, 68, 0.07);
+    text-align: center;
+}
+
+.smart-scan-card h2 {
+    font-family: 'Playfair Display', serif;
+    color: #607B58;
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.smart-scan-card > p {
+    color: #899383;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+
+/* ==========================================
+   PHOTO UPLOAD
+========================================== */
+
+.smart-upload-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #E7EDDF;
+    color: #607B58;
+    border: 2px dashed #9CAF88;
+    border-radius: 15px;
+    padding: 18px 25px;
+    margin: 18px auto;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.smart-upload-label:hover {
+    background: #DCE6D3;
+    border-color: #607B58;
+    transform: translateY(-2px);
+}
+
+#packagedPhotoInput,
+#producePhotoInput {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin: 5px auto 18px;
+    padding: 10px;
+    background: #FFF9F0;
+    border: 1px solid #E7E9DF;
+    border-radius: 10px;
+    color: #607B58;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+}
+
+#packagedPhotoInput::file-selector-button,
+#producePhotoInput::file-selector-button {
+    background: #9CAF88;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   IMAGE PREVIEWS
+========================================== */
+
+.smart-image-preview {
+    display: none;
+    width: 100%;
+    max-width: 350px;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 20px auto;
+    padding: 8px;
+    background: #FFF9F0;
+    border: 1px solid #E7E9DF;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(69, 87, 68, 0.08);
+}
+
+.smart-barcode-reader {
+    width: 100%;
+    max-width: 400px;
+    margin: 15px auto;
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   SMART SCAN BUTTONS
+========================================== */
+
+.smart-scan-card .scan-button {
+    display: inline-block;
+    min-width: 210px;
+    margin: 18px auto;
+    padding: 15px 24px;
+    background: #9CAF88;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.smart-scan-card .scan-button:hover {
+    background: #607B58;
+    transform: translateY(-2px);
+}
+
+.smart-scan-card .scan-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+
+/* ==========================================
+   SMART SCAN STATUS
+========================================== */
+
+#packagedStatus,
+#produceStatus {
+    min-height: 24px;
+    margin: 15px auto;
+    padding: 12px;
+    background: #E7EDDF;
+    color: #607B58;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+
+/* ==========================================
+   SMART SCAN RESULTS
+========================================== */
+
+.smart-results {
+    display: none;
+    width: 100%;
+    margin: 22px auto;
+    padding: 22px;
+    background: #FFF9F0;
+    border: 1px solid #E7E9DF;
+    border-radius: 16px;
+    text-align: left;
+    color: #455744;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.smart-results h3 {
+    color: #607B58;
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.smart-results p {
+    color: #607B58;
+    font-size: 13px;
+    margin: 10px 0;
+}
+
+.smart-results label {
+    display: block;
+    color: #455744;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 12px 0 6px;
+}
+
+.smart-results select {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px;
+    border: 1px solid #9CAF88;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #455744;
+    font-family: 'DM Sans', sans-serif;
+}
+
+
+/* ==========================================
+   CONFIRMATION FORMS
+========================================== */
+
+.smart-confirm-form {
+    margin-top: 28px;
+    padding: 25px;
+    background: #FFF9F0;
+    border: 1px solid #E7E9DF;
+    border-radius: 18px;
+    text-align: left;
+}
+
+.smart-confirm-form h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    color: #607B58;
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.smart-confirm-form .form-group {
+    margin-bottom: 18px;
+}
+
+.smart-confirm-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #455744;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.smart-confirm-form input,
+.smart-confirm-form select,
+.smart-confirm-form textarea {
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #E7E9DF;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #455744;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.smart-confirm-form input:focus,
+.smart-confirm-form select:focus,
+.smart-confirm-form textarea:focus {
+    border-color: #9CAF88;
+}
+
+.smart-confirm-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.smart-confirm-form .primary-button {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: #607B58;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.smart-confirm-form .primary-button:hover {
+    background: #455744;
+}
+
+
+/* ==========================================
+   SMART SCAN INFORMATION NOTE
+========================================== */
+
+.smart-note {
+    margin-top: 22px !important;
+    padding: 15px;
+    background: #F5DDE1;
+    border-left: 4px solid #BD7F8D;
+    border-radius: 10px;
+    color: #76545C !important;
+    font-size: 12px !important;
+    line-height: 1.8 !important;
+    text-align: left;
+}
+
+
+/* ==========================================
+   ORIGINAL SCANNER FALLBACK
+========================================== */
+
+.legacy-scanner {
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: #FFFFFF;
+    border: 1px solid #E7E9DF;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.legacy-scanner summary {
+    padding: 18px 22px;
+    background: #E7EDDF;
+    color: #607B58;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.legacy-scanner summary:hover {
+    background: #DCE6D3;
+}
+
+.legacy-scanner[open] {
+    padding-bottom: 20px;
+}
+
+.legacy-scanner .scanner-container {
+    padding: 15px;
+}
+
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+.smart-scan-card button:focus-visible,
+.smart-mode-button:focus-visible,
+.smart-upload-label:focus-visible,
+.legacy-scanner summary:focus-visible {
+    outline: 3px solid #BD7F8D;
+    outline-offset: 3px;
+}
+
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
 
 @media (max-width: 600px) {
 
@@ -265,5 +700,73 @@
 
     .manual-input input {
         max-width: 100%;
+    }
+
+    .smart-scan-intro {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .smart-scan-intro h2 {
+        font-size: 22px;
+    }
+
+    .smart-scan-intro p {
+        font-size: 13px;
+    }
+
+    .smart-scan-modes {
+        gap: 9px;
+    }
+
+    .smart-mode-button {
+        min-width: 0;
+        padding: 13px 10px;
+        font-size: 12px;
+    }
+
+    .smart-scan-card {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .smart-scan-card h2 {
+        font-size: 21px;
+    }
+
+    .smart-scan-card > p {
+        font-size: 13px;
+    }
+
+    .smart-upload-label {
+        width: 100%;
+        padding: 15px 10px;
+        font-size: 13px;
+    }
+
+    .smart-image-preview {
+        max-height: 240px;
+    }
+
+    .smart-scan-card .scan-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .smart-confirm-form {
+        padding: 18px;
+    }
+
+    .smart-confirm-form h3 {
+        font-size: 19px;
+    }
+
+    .smart-results {
+        padding: 16px;
+    }
+
+    .legacy-scanner summary {
+        padding: 15px;
+        font-size: 13px;
     }
 }

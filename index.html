@@ -12,8 +12,13 @@
     <link rel="stylesheet" href="./css/scanner.css">
     <link rel="manifest" href="./manifest.json">
 
+    <!-- Existing scanner libraries -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <!-- AI image recognition libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +27,6 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-
         <div class="logo">
             <h2>🥬 FoodWise</h2>
             <p>Save Food, Reduce Waste</p>
@@ -33,15 +37,13 @@
             <a href="#inventory" class="nav-link" data-section="inventory">📦 Food Inventory</a>
             <a href="#add-food" class="nav-link" data-section="add-food">➕ Add Food</a>
             <a href="#expiry" class="nav-link" data-section="expiry">⏰ Expiry Alerts</a>
-            <a href="#scanner" class="nav-link" data-section="scanner">📷 Scan Food</a>
+            <a href="#scanner" class="nav-link" data-section="scanner">📷 AI Smart Scan</a>
         </nav>
 
         <div class="sidebar-bottom">
             <p>Eat Smart. Save Food.</p>
         </div>
-
     </aside>
-
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
@@ -61,7 +63,6 @@
             </header>
 
             <section class="stats-container">
-
                 <div class="stat-card">
                     <h3>Total Items</h3>
                     <div class="stat-number" id="totalItems">0</div>
@@ -81,15 +82,12 @@
                     <h3>Fresh Items</h3>
                     <div class="stat-number" id="freshItems">0</div>
                 </div>
-
             </section>
 
-            <!-- QUICK ACTIONS -->
             <section class="quick-actions">
                 <h2>Quick Actions</h2>
 
                 <div class="action-buttons">
-
                     <button type="button" class="primary-button" data-go="add-food">
                         + Add Food Item
                     </button>
@@ -99,29 +97,23 @@
                     </button>
 
                     <button type="button" class="secondary-button" data-go="scanner">
-                        📷 Scan Food
+                        📷 AI Smart Scan
                     </button>
-
                 </div>
             </section>
 
-            <!-- DASHBOARD EXPIRY ALERTS -->
             <section class="content-section">
-
                 <div class="section-heading">
                     <h2>⚠️ Expiry Alerts</h2>
                 </div>
 
                 <div id="dashboardExpiryAlerts"></div>
-
             </section>
 
             <footer>
                 <p>FoodWise © 2026 | Save Food, Reduce Waste 🌱</p>
             </footer>
-
         </section>
-
 
         <!-- INVENTORY -->
         <section id="inventory" class="page-section">
@@ -138,14 +130,12 @@
             </header>
 
             <section class="content-section">
-
                 <div class="section-heading">
                     <h2>📦 Your Food Inventory</h2>
                     <span id="inventoryCount">0 items</span>
                 </div>
 
                 <div class="table-container">
-
                     <table id="inventory">
                         <thead>
                             <tr>
@@ -160,13 +150,9 @@
 
                         <tbody id="inventoryTableBody"></tbody>
                     </table>
-
                 </div>
-
             </section>
-
         </section>
-
 
         <!-- ADD FOOD -->
         <section id="add-food" class="page-section">
@@ -179,7 +165,6 @@
             </header>
 
             <section class="content-section">
-
                 <div class="section-heading">
                     <h2>➕ Add New Food Item</h2>
                 </div>
@@ -198,7 +183,6 @@
 
                     <div class="form-group">
                         <label for="category">Category</label>
-
                         <select id="category" required>
                             <option value="">Select Category</option>
                             <option value="Fruits">Fruits</option>
@@ -228,13 +212,9 @@
                     <button type="submit" class="primary-button">
                         Save Food Item
                     </button>
-
                 </form>
-
             </section>
-
         </section>
-
 
         <!-- EXPIRY ALERTS -->
         <section id="expiry" class="page-section">
@@ -247,123 +227,359 @@
             </header>
 
             <section class="content-section">
-
                 <div class="section-heading">
                     <h2>⏰ Food Expiry Reminders</h2>
                     <span id="expiryAlertCount">0 alerts</span>
                 </div>
 
                 <div id="expiryAlerts"></div>
-
             </section>
-
         </section>
 
-
-        <!-- SCANNER -->
+        <!-- AI SMART SCAN -->
         <section id="scanner" class="page-section">
 
             <header class="top-header">
                 <div>
-                    <h1>Smart Food Scanner</h1>
-                    <p>Scan product barcodes and read printed expiry dates.</p>
+                    <h1>AI Smart Scan</h1>
+                    <p>Scan packaged food or identify fresh fruits and vegetables.</p>
                 </div>
             </header>
 
-            <div class="scanner-container">
+            <div class="smart-scan-intro">
+                <h2>🌱 Your Smart Food Assistant</h2>
+                <p>
+                    Use your camera to photograph food. FoodWise will try to
+                    identify it and help manage its storage and expiry information.
+                </p>
+            </div>
 
-                <!-- BARCODE SCANNER -->
-                <section class="scanner-card">
+            <!-- SCAN MODE SELECTOR -->
+            <div class="smart-scan-modes">
 
-                    <h2>📦 Barcode Scanner</h2>
+                <button type="button" id="packagedModeBtn" class="smart-mode-button active">
+                    📦 Packaged Food
+                </button>
 
-                    <p class="scanner-description">
-                        Point your camera at a food product barcode to find its details.
+                <button type="button" id="produceModeBtn" class="smart-mode-button">
+                    🍎 Fresh Produce
+                </button>
+
+            </div>
+
+            <!-- PACKAGED FOOD PANEL -->
+            <section id="smartPackagedPanel" class="smart-scan-panel">
+
+                <div class="smart-scan-card">
+
+                    <h2>📦 Packaged Food Scanner</h2>
+
+                    <p>
+                        Open your camera and take a clear photo of your packaged food.
+                        FoodWise will attempt to read the barcode and printed date.
                     </p>
 
-                    <div id="reader"></div>
+                    <div class="smart-camera-container">
 
-                    <div>
-                        <button type="button" id="startScanBtn" class="scan-button">
-                            Start Barcode Scanner
-                        </button>
+                        <video
+                            id="packagedCamera"
+                            class="smart-image-preview"
+                            autoplay
+                            playsinline
+                            muted
+                        ></video>
 
-                        <button type="button" id="stopScanBtn" class="scan-button stop-button">
-                            Stop Scanner
-                        </button>
-                    </div>
-
-                    <p id="scanStatus" aria-live="polite">
-                        Click Start Barcode Scanner to begin.
-                    </p>
-
-                    <div class="manual-input">
-                        <h3>Enter Barcode Manually</h3>
-
-                        <input
-                            type="text"
-                            id="manualBarcode"
-                            placeholder="Enter barcode number"
-                            inputmode="numeric"
+                        <img
+                            id="packagedPreview"
+                            class="smart-image-preview"
+                            alt="Captured packaged food"
                         >
 
-                        <button type="button" id="manualScanBtn" class="scan-button">
-                            Search Product
-                        </button>
-                    </div>
-
-                </section>
-
-
-                <!-- OCR EXPIRY SCANNER -->
-                <section class="scanner-card ocr-card">
-
-                    <h2>📅 Expiry Date Scanner</h2>
-
-                    <p class="scanner-description">
-                        Capture the printed expiry date on your food package.
-                    </p>
-
-                    <div class="ocr-camera-container">
-
-                        <video id="ocrVideo" autoplay playsinline muted></video>
-
-                        <canvas id="ocrCanvas" style="display:none;"></canvas>
+                        <canvas id="packagedCanvas" hidden></canvas>
 
                     </div>
 
-                    <div class="ocr-buttons">
+                    <div class="smart-camera-controls">
 
-                        <button type="button" id="startOcrCamera" class="scan-button">
-                            Open Camera
+                        <button type="button" id="openPackagedCameraBtn" class="scan-button">
+                            📷 Open Camera
                         </button>
 
-                        <button type="button" id="captureOcrImage" class="scan-button">
-                            Capture & Read Date
+                        <button type="button" id="capturePackagedPhotoBtn" class="scan-button" disabled>
+                            📸 Capture Photo
                         </button>
 
-                        <button type="button" id="stopOcrCamera" class="scan-button stop-button">
+                        <button type="button" id="retakePackagedPhotoBtn" class="scan-button" hidden>
+                            🔄 Retake Photo
+                        </button>
+
+                        <button type="button" id="stopPackagedCameraBtn" class="scan-button stop-button" disabled>
                             Stop Camera
                         </button>
 
                     </div>
 
-                    <p id="ocrStatus" aria-live="polite">
-                        Open the camera to start reading expiry dates.
+                    <div id="smartBarcodeReader" class="smart-barcode-reader"></div>
+
+                    <button type="button" id="analysePackagedBtn" class="scan-button" disabled>
+                        ✨ Analyse Package
+                    </button>
+
+                    <p id="packagedStatus" aria-live="polite">
+                        Open the camera to begin.
                     </p>
 
-                    <div id="ocrResult" class="ocr-result"></div>
+                    <div id="packagedResults" class="smart-results"></div>
 
-                </section>
+                    <!-- CONFIRM PRODUCT DETAILS -->
+                    <div class="smart-confirm-form">
 
-            </div>
+                        <h3>Confirm Food Details</h3>
+
+                        <div class="form-group">
+                            <label for="packagedFoodName">Food Name</label>
+                            <input type="text" id="packagedFoodName" placeholder="Food name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="packagedBrand">Brand</label>
+                            <input type="text" id="packagedBrand" placeholder="Brand name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="packagedQuantity">Quantity</label>
+                            <input type="text" id="packagedQuantity" placeholder="Example: 500 g, 1 Litre">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="packagedExpiry">Expiry / Best Before Date</label>
+                            <input type="date" id="packagedExpiry">
+                        </div>
+
+                        <button type="button" id="addPackagedFoodBtn" class="primary-button">
+                            Add Packaged Food to Inventory
+                        </button>
+
+                    </div>
+
+                    <p class="smart-note">
+                        The barcode and expiry date may be on different sides of a package.
+                        If one is not visible, another photo may be needed. Always verify
+                        the printed date before saving.
+                    </p>
+
+                </div>
+            </section>
+
+            <!-- FRESH PRODUCE PANEL -->
+            <section id="smartProducePanel" class="smart-scan-panel" style="display:none;">
+
+                <div class="smart-scan-card">
+
+                    <h2>🍎 Fresh Fruit & Vegetable Scanner</h2>
+
+                    <p>
+                        Open your camera and take a photo of an individual fruit
+                        or vegetable. AI will suggest its identity.
+                    </p>
+
+                    <div class="smart-camera-container">
+
+                        <video
+                            id="produceCamera"
+                            class="smart-image-preview"
+                            autoplay
+                            playsinline
+                            muted
+                        ></video>
+
+                        <img
+                            id="producePreview"
+                            class="smart-image-preview"
+                            alt="Captured fresh produce"
+                        >
+
+                        <canvas id="produceCanvas" hidden></canvas>
+
+                    </div>
+
+                    <div class="smart-camera-controls">
+
+                        <button type="button" id="openProduceCameraBtn" class="scan-button">
+                            📷 Open Camera
+                        </button>
+
+                        <button type="button" id="captureProducePhotoBtn" class="scan-button" disabled>
+                            📸 Capture Photo
+                        </button>
+
+                        <button type="button" id="retakeProducePhotoBtn" class="scan-button" hidden>
+                            🔄 Retake Photo
+                        </button>
+
+                        <button type="button" id="stopProduceCameraBtn" class="scan-button stop-button" disabled>
+                            Stop Camera
+                        </button>
+
+                    </div>
+
+                    <button type="button" id="analyseProduceBtn" class="scan-button" disabled>
+                        ✨ Identify Fresh Produce
+                    </button>
+
+                    <p id="produceStatus" aria-live="polite">
+                        Open the camera to begin.
+                    </p>
+
+                    <div id="produceResults" class="smart-results"></div>
+
+                    <!-- CONFIRM PRODUCE DETAILS -->
+                    <div class="smart-confirm-form">
+
+                        <h3>Confirm Produce Details</h3>
+
+                        <div class="form-group">
+                            <label for="produceFoodName">Food Name</label>
+                            <input type="text" id="produceFoodName" placeholder="Confirm or enter food name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produceCategory">Category</label>
+                            <select id="produceCategory">
+                                <option value="Fruits">Fruits</option>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produceCondition">Visible Condition</label>
+                            <select id="produceCondition">
+                                <option value="">Select visible condition</option>
+                                <option value="Fresh-looking">Fresh-looking</option>
+                                <option value="Unripe-looking">Unripe-looking</option>
+                                <option value="Ripe-looking">Ripe-looking</option>
+                                <option value="Visible damage">Visible damage</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produceStorage">Suggested Storage Method</label>
+                            <textarea id="produceStorage" rows="3" placeholder="Storage suggestion will appear here" readonly></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produceShelfLife">Estimated Storage Period (Days)</label>
+                            <input type="number" id="produceShelfLife" min="1" placeholder="Estimated days" readonly>
+                        </div>
+
+                        <button type="button" id="addProduceFoodBtn" class="primary-button">
+                            Add Produce to Inventory
+                        </button>
+
+                    </div>
+
+                    <p class="smart-note">
+                        AI identification is a suggestion and may be incorrect.
+                        Storage periods are general estimates, not guaranteed expiry dates.
+                        A photo cannot reliably detect internal spoilage or determine
+                        whether food is safe to eat. Check the produce yourself.
+                    </p>
+
+                </div>
+            </section>
+
+            <!-- ORIGINAL SCANNER - FALLBACK -->
+            <details class="legacy-scanner">
+
+                <summary>Use Original Barcode & Expiry Scanner</summary>
+
+                <div class="scanner-container">
+
+                    <section class="scanner-card">
+
+                        <h2>📦 Barcode Scanner</h2>
+
+                        <p class="scanner-description">
+                            Point your camera at a food product barcode to find its details.
+                        </p>
+
+                        <div id="reader"></div>
+
+                        <div>
+                            <button type="button" id="startScanBtn" class="scan-button">
+                                Start Barcode Scanner
+                            </button>
+
+                            <button type="button" id="stopScanBtn" class="scan-button stop-button">
+                                Stop Scanner
+                            </button>
+                        </div>
+
+                        <p id="scanStatus" aria-live="polite">
+                            Click Start Barcode Scanner to begin.
+                        </p>
+
+                        <div class="manual-input">
+                            <h3>Enter Barcode Manually</h3>
+
+                            <input
+                                type="text"
+                                id="manualBarcode"
+                                placeholder="Enter barcode number"
+                                inputmode="numeric"
+                            >
+
+                            <button type="button" id="manualScanBtn" class="scan-button">
+                                Search Product
+                            </button>
+                        </div>
+
+                    </section>
+
+                    <section class="scanner-card ocr-card">
+
+                        <h2>📅 Expiry Date Scanner</h2>
+
+                        <p class="scanner-description">
+                            Capture the printed expiry date on your food package.
+                        </p>
+
+                        <div class="ocr-camera-container">
+                            <video id="ocrVideo" autoplay playsinline muted></video>
+                            <canvas id="ocrCanvas" style="display:none;"></canvas>
+                        </div>
+
+                        <div class="ocr-buttons">
+
+                            <button type="button" id="startOcrCamera" class="scan-button">
+                                Open Camera
+                            </button>
+
+                            <button type="button" id="captureOcrImage" class="scan-button">
+                                Capture & Read Date
+                            </button>
+
+                            <button type="button" id="stopOcrCamera" class="scan-button stop-button">
+                                Stop Camera
+                            </button>
+
+                        </div>
+
+                        <p id="ocrStatus" aria-live="polite">
+                            Open the camera to start reading expiry dates.
+                        </p>
+
+                        <div id="ocrResult" class="ocr-result"></div>
+
+                    </section>
+                </div>
+            </details>
 
         </section>
 
     </main>
-
 </div>
-
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-navigation" aria-label="Main navigation">
@@ -390,32 +606,27 @@
 
 </nav>
 
-
 <!-- DESKTOP NOTIFICATIONS -->
 <button id="enableNotificationsBtn" type="button">
     🔔 Enable Desktop Notifications
 </button>
 
-
 <!-- APPLICATION SCRIPTS -->
 <script type="module" src="./js/app.js"></script>
 <script src="./js/scanner.js"></script>
+<script src="./js/smart-scan.js"></script>
 <script src="./js/pwa.js"></script>
-
 
 <!-- SINGLE PAGE NAVIGATION -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
     const sections = document.querySelectorAll(".page-section");
-    const navLinks = document.querySelectorAll(
-        ".nav-link, .bottom-nav-link"
-    );
+    const navLinks = document.querySelectorAll(".nav-link, .bottom-nav-link");
 
     function showSection(sectionId) {
 
         const target = document.getElementById(sectionId);
-
         if (!target) return;
 
         sections.forEach(section => {
