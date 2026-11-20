@@ -1,6 +1,6 @@
 
 /* ========================================
-   FOODWISE - BARCODE SCANNER
+   FOODWISE - SINGLE PAGE BARCODE SCANNER
 ======================================== */
 
 let html5QrCode = null;
@@ -13,7 +13,54 @@ const barcodeInput = document.getElementById("manualBarcode");
 const scanStatus = document.getElementById("scanStatus");
 
 function showStatus(message) {
-    if (scanStatus) scanStatus.textContent = message;
+    if (scanStatus) {
+        scanStatus.textContent = message;
+    }
+}
+
+
+// ========================================
+// OPEN ADD FOOD SECTION
+// ========================================
+
+function openAddFoodSection() {
+    const addFoodLink = document.querySelector(
+        '.nav-link[data-section="add-food"]'
+    );
+
+    if (addFoodLink) {
+        addFoodLink.click();
+    }
+}
+
+
+// ========================================
+// FILL ADD FOOD FORM
+// ========================================
+
+function fillFoodForm(product) {
+    const nameField = document.getElementById("foodName");
+    const brandField = document.getElementById("foodBrand");
+    const quantityField = document.getElementById("quantity");
+    const purchaseDateField = document.getElementById("purchaseDate");
+
+    if (nameField && product.name) {
+        nameField.value = product.name;
+    }
+
+    if (brandField && product.brand) {
+        brandField.value = product.brand;
+    }
+
+    if (quantityField && product.quantity) {
+        quantityField.value = product.quantity;
+    }
+
+    if (purchaseDateField && !purchaseDateField.value) {
+        purchaseDateField.value = new Date().toISOString().split("T")[0];
+    }
+
+    openAddFoodSection();
 }
 
 
@@ -67,11 +114,9 @@ async function searchProduct(barcode) {
             JSON.stringify(productDetails)
         );
 
-        showStatus("Product found! Opening dashboard... 🎉");
+        fillFoodForm(productDetails);
 
-        setTimeout(() => {
-            window.location.href = "./index.html#add-food";
-        }, 1200);
+        showStatus("Product found! Details added to your food form. 🎉");
 
     } catch (error) {
         console.error("Product search error:", error);
@@ -88,7 +133,7 @@ async function startScanner() {
     if (isScanning) return;
 
     if (typeof Html5Qrcode === "undefined") {
-        showStatus("Scanner library could not load.");
+        showStatus("Scanner library could not load. Refresh the page.");
         return;
     }
 
@@ -117,7 +162,7 @@ async function startScanner() {
                 ]
             },
             async (decodedText) => {
-                showStatus("Barcode detected!");
+                showStatus("Barcode detected! 🎉");
 
                 await stopScanner();
                 await searchProduct(decodedText);
@@ -126,6 +171,7 @@ async function startScanner() {
         );
 
         isScanning = true;
+
         showStatus("Camera active! Point it at a food barcode.");
 
     } catch (error) {
@@ -157,7 +203,18 @@ async function stopScanner() {
 
 if (manualButton) {
     manualButton.addEventListener("click", () => {
-        searchProduct(barcodeInput.value);
+        if (barcodeInput) {
+            searchProduct(barcodeInput.value);
+        }
+    });
+}
+
+if (barcodeInput) {
+    barcodeInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchProduct(barcodeInput.value);
+        }
     });
 }
 
@@ -185,14 +242,25 @@ const openOcrCamera = document.getElementById("startOcrCamera");
 const captureOcrImage = document.getElementById("captureOcrImage");
 const stopOcrCamera = document.getElementById("stopOcrCamera");
 
+function showOcrStatus(message) {
+    if (ocrStatus) {
+        ocrStatus.textContent = message;
+    }
+}
+
 
 // ========================================
 // OPEN OCR CAMERA
 // ========================================
 
 async function startOcrCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showOcrStatus("Camera is unavailable. Open FoodWise using HTTPS.");
+        return;
+    }
+
     try {
-        ocrStatus.textContent = "Opening camera... 📷";
+        showOcrStatus("Opening camera... 📷");
 
         if (ocrCameraStream) {
             stopOcrCameraFunction();
@@ -219,13 +287,16 @@ async function startOcrCamera() {
 
         await ocrVideo.play();
 
-        ocrStatus.textContent =
-            "Camera ready! Position the printed dates clearly.";
+        showOcrStatus(
+            "Camera ready! Position the printed dates clearly."
+        );
 
     } catch (error) {
         console.error("OCR camera error:", error);
-        ocrStatus.textContent =
-            "Could not open camera. Allow camera permission and try again.";
+
+        showOcrStatus(
+            "Could not open camera. Allow camera permission and try again."
+        );
     }
 }
 
@@ -244,7 +315,7 @@ function stopOcrCameraFunction() {
         ocrVideo.srcObject = null;
     }
 
-    ocrStatus.textContent = "Camera stopped.";
+    showOcrStatus("Camera stopped.");
 }
 
 
@@ -277,7 +348,6 @@ function formatDate(day, month, year) {
 function findExpiryDate(text) {
     const detectedDates = [];
 
-    // DD/MM/YY or DD/MM/YYYY
     const datePattern =
         /\b(0?[1-9]|[12]\d|3[01])\s*[/.\-\s]\s*(0?[1-9]|1[0-2])\s*[/.\-\s]\s*(\d{2}|\d{4})\b/g;
 
@@ -288,8 +358,6 @@ function findExpiryDate(text) {
         const month = Number(match[2]);
         const yearText = match[3];
 
-        // Convert 27 into 2027, 28 into 2028, etc.
-        // Do not change or guess the digits read by OCR.
         const year = yearText.length === 2
             ? 2000 + Number(yearText)
             : Number(yearText);
@@ -303,7 +371,6 @@ function findExpiryDate(text) {
         }
     }
 
-    // YYYY-MM-DD
     const isoPattern =
         /\b(20\d{2})-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])\b/g;
 
@@ -434,7 +501,13 @@ function displayDetectedDates(dates) {
 
         sessionStorage.setItem("scannedExpiryDate", selectedDate);
 
-        ocrStatus.textContent = "Expiry date confirmed successfully! 🎉";
+        const expiryDateField = document.getElementById("expiryDate");
+
+        if (expiryDateField) {
+            expiryDateField.value = selectedDate;
+        }
+
+        showOcrStatus("Expiry date confirmed successfully! 🎉");
 
         const confirmation = document.createElement("p");
 
@@ -445,6 +518,8 @@ function displayDetectedDates(dates) {
         ocrResult.appendChild(confirmation);
 
         console.log("Confirmed expiry date:", selectedDate);
+
+        openAddFoodSection();
     });
 
     ocrResult.appendChild(heading);
@@ -460,22 +535,20 @@ function displayDetectedDates(dates) {
 
 async function captureAndReadExpiry() {
     if (!ocrCameraStream) {
-        ocrStatus.textContent = "Please open the camera first!";
+        showOcrStatus("Please open the camera first!");
         return;
     }
 
     try {
-        ocrStatus.textContent = "Capturing image... 📸";
+        showOcrStatus("Capturing image... 📸");
 
         await ocrVideo.play();
 
         if (!ocrVideo.videoWidth || !ocrVideo.videoHeight) {
-            ocrStatus.textContent =
-                "Camera is not ready. Please try again.";
+            showOcrStatus("Camera is not ready. Please try again.");
             return;
         }
 
-        // Capture camera image
         ocrCanvas.width = ocrVideo.videoWidth;
         ocrCanvas.height = ocrVideo.videoHeight;
 
@@ -489,19 +562,18 @@ async function captureAndReadExpiry() {
             ocrCanvas.height
         );
 
-        // Enlarge and enhance image
-        ocrStatus.textContent = "Improving image quality... 🔍";
+        showOcrStatus("Improving image quality... 🔍");
 
         const processedCanvas = enhanceImage(ocrCanvas);
 
         if (typeof Tesseract === "undefined") {
-            ocrStatus.textContent =
-                "OCR library failed to load. Refresh the page.";
+            showOcrStatus(
+                "OCR library failed to load. Refresh the page."
+            );
             return;
         }
 
-        // First OCR attempt
-        ocrStatus.textContent = "Reading enlarged image... Please wait!";
+        showOcrStatus("Reading enlarged image... Please wait!");
 
         const enhancedResult = await Tesseract.recognize(
             processedCanvas,
@@ -509,9 +581,10 @@ async function captureAndReadExpiry() {
             {
                 logger: message => {
                     if (message.status === "recognizing text") {
-                        ocrStatus.textContent =
+                        showOcrStatus(
                             "Reading text: " +
-                            Math.round(message.progress * 100) + "%";
+                            Math.round(message.progress * 100) + "%"
+                        );
                     }
                 }
             }
@@ -523,10 +596,10 @@ async function captureAndReadExpiry() {
 
         let detectedDates = findExpiryDate(extractedText);
 
-        // Second OCR attempt if needed
         if (detectedDates.length === 0) {
-            ocrStatus.textContent =
-                "Trying another image-reading method...";
+            showOcrStatus(
+                "Trying another image-reading method..."
+            );
 
             const originalResult = await Tesseract.recognize(
                 ocrCanvas,
@@ -542,10 +615,10 @@ async function captureAndReadExpiry() {
             detectedDates = findExpiryDate(extractedText);
         }
 
-        // Display results
         if (detectedDates.length === 0) {
-            ocrStatus.textContent =
-                "No expiry date detected. Try a clearer image.";
+            showOcrStatus(
+                "No expiry date detected. Try a clearer image."
+            );
 
             ocrResult.style.display = "block";
             ocrResult.textContent = "Text detected: " + extractedText;
@@ -555,15 +628,17 @@ async function captureAndReadExpiry() {
 
         displayDetectedDates(detectedDates);
 
-        ocrStatus.textContent =
+        showOcrStatus(
             detectedDates.length +
-            " date(s) detected! Please select the expiry date.";
+            " date(s) detected! Please select the expiry date."
+        );
 
     } catch (error) {
         console.error("OCR error:", error);
 
-        ocrStatus.textContent =
-            "Something went wrong while reading the image.";
+        showOcrStatus(
+            "Something went wrong while reading the image."
+        );
     }
 }
 
@@ -585,4 +660,20 @@ if (stopOcrCamera) {
 }
 
 
-console.log("FoodWise barcode and OCR scanner loaded successfully! 💚");
+// Stop cameras when leaving the scanner section.
+
+document.querySelectorAll(".nav-link, .bottom-nav-link").forEach(link => {
+    link.addEventListener("click", async () => {
+        if (link.dataset.section !== "scanner") {
+            await stopScanner();
+
+            if (ocrCameraStream) {
+                stopOcrCameraFunction();
+            }
+        }
+    });
+});
+
+
+console.log("FoodWise single-page barcode and OCR scanner loaded! 💚");
+

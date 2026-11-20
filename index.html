@@ -4,39 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodWise | Dashboard</title>
+    <meta name="theme-color" content="#9CAF88">
+
+    <title>FoodWise | Smart Food Management</title>
+
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/scanner.css">
     <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#9CAF88">
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 
 <body>
 
-    <div class="app-container">
+<div class="app-container">
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <h2>🥬 FoodWise</h2>
-                <p>Save Food, Reduce Waste</p>
-            </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-            <nav>
-                <a href="#dashboard" class="nav-link active">🏠 Dashboard</a>
-                <a href="#inventory" class="nav-link">📦 Food Inventory</a>
-                <a href="#add-food" class="nav-link">➕ Add Food</a>
-                <a href="#expiry" class="nav-link">⏰ Expiry Alerts</a>
-            </nav>
+        <div class="logo">
+            <h2>🥬 FoodWise</h2>
+            <p>Save Food, Reduce Waste</p>
+        </div>
 
-            <div class="sidebar-bottom">
-                <p>Eat Smart. Save Food.</p>
-            </div>
-        </aside>
+        <nav>
+            <a href="#dashboard" class="nav-link active" data-section="dashboard">🏠 Dashboard</a>
+            <a href="#inventory" class="nav-link" data-section="inventory">📦 Food Inventory</a>
+            <a href="#add-food" class="nav-link" data-section="add-food">➕ Add Food</a>
+            <a href="#expiry" class="nav-link" data-section="expiry">⏰ Expiry Alerts</a>
+            <a href="#scanner" class="nav-link" data-section="scanner">📷 Scan Food</a>
+        </nav>
 
-        <!-- Main Content -->
-        <main class="main-content" id="dashboard">
+        <div class="sidebar-bottom">
+            <p>Eat Smart. Save Food.</p>
+        </div>
 
-            <!-- Top Header -->
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page-section active">
+
             <header class="top-header">
                 <div>
                     <h1>Dashboard</h1>
@@ -48,7 +60,6 @@
                 </div>
             </header>
 
-            <!-- Statistics -->
             <section class="stats-container">
 
                 <div class="stat-card">
@@ -73,45 +84,69 @@
 
             </section>
 
-            <!-- Quick Actions -->
+            <!-- QUICK ACTIONS -->
             <section class="quick-actions">
                 <h2>Quick Actions</h2>
 
                 <div class="action-buttons">
-                    <a href="#add-food" class="primary-button">
-                        + Add Food Item
-                    </a>
 
-                    <a href="#inventory" class="secondary-button">
+                    <button type="button" class="primary-button" data-go="add-food">
+                        + Add Food Item
+                    </button>
+
+                    <button type="button" class="secondary-button" data-go="inventory">
                         View Inventory
-                    </a>
+                    </button>
+
+                    <button type="button" class="secondary-button" data-go="scanner">
+                        📷 Scan Food
+                    </button>
+
                 </div>
             </section>
 
-            <!-- Expiry Alerts -->
-            <section class="content-section" id="expiry">
+            <!-- DASHBOARD EXPIRY ALERTS -->
+            <section class="content-section">
 
                 <div class="section-heading">
                     <h2>⚠️ Expiry Alerts</h2>
-                    <span id="expiryAlertCount">0 alerts</span>
                 </div>
 
-                <div id="expiryAlerts">
-                    <!-- Alerts will be added automatically -->
-                </div>
+                <div id="dashboardExpiryAlerts"></div>
 
             </section>
 
-            <!-- Food Inventory -->
-            <section class="content-section" id="inventory">
+            <footer>
+                <p>FoodWise © 2026 | Save Food, Reduce Waste 🌱</p>
+            </footer>
+
+        </section>
+
+
+        <!-- INVENTORY -->
+        <section id="inventory" class="page-section">
+
+            <header class="top-header">
+                <div>
+                    <h1>Food Inventory</h1>
+                    <p>Manage all your stored food items.</p>
+                </div>
+
+                <button type="button" class="primary-button" data-go="add-food">
+                    + Add Food
+                </button>
+            </header>
+
+            <section class="content-section">
 
                 <div class="section-heading">
-                    <h2>📦 Recent Food Inventory</h2>
+                    <h2>📦 Your Food Inventory</h2>
                     <span id="inventoryCount">0 items</span>
                 </div>
 
                 <div class="table-container">
-                    <table>
+
+                    <table id="inventory">
                         <thead>
                             <tr>
                                 <th>Food Item</th>
@@ -123,16 +158,27 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <!-- Food items will appear here -->
-                        </tbody>
+                        <tbody id="inventoryTableBody"></tbody>
                     </table>
+
                 </div>
 
             </section>
 
-            <!-- Add Food -->
-            <section class="content-section" id="add-food">
+        </section>
+
+
+        <!-- ADD FOOD -->
+        <section id="add-food" class="page-section">
+
+            <header class="top-header">
+                <div>
+                    <h1>Add Food</h1>
+                    <p>Add food items to your personal inventory.</p>
+                </div>
+            </header>
+
+            <section class="content-section">
 
                 <div class="section-heading">
                     <h2>➕ Add New Food Item</h2>
@@ -142,24 +188,17 @@
 
                     <div class="form-group">
                         <label for="foodName">Food Name</label>
-                        <input
-                            type="text"
-                            id="foodName"
-                            placeholder="Enter food name"
-                            required
-                        >
+                        <input type="text" id="foodName" placeholder="Enter food name" required>
                     </div>
+
                     <div class="form-group">
-    <label for="foodBrand">Brand (Optional)</label>
-    <input
-        type="text"
-        id="foodBrand"
-        placeholder="Example: Nestlé, Amul, Mother Dairy"
-    >
-</div>
+                        <label for="foodBrand">Brand (Optional)</label>
+                        <input type="text" id="foodBrand" placeholder="Example: Nestlé, Amul, Mother Dairy">
+                    </div>
 
                     <div class="form-group">
                         <label for="category">Category</label>
+
                         <select id="category" required>
                             <option value="">Select Category</option>
                             <option value="Fruits">Fruits</option>
@@ -173,12 +212,7 @@
 
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
-                        <input
-                            type="text"
-                            id="quantity"
-                            placeholder="Example: 2 Kg, 1 Litre"
-                            required
-                        >
+                        <input type="text" id="quantity" placeholder="Example: 2 Kg, 1 Litre" required>
                     </div>
 
                     <div class="form-group">
@@ -199,18 +233,227 @@
 
             </section>
 
-            <!-- Footer -->
-            <footer>
-                <p>FoodWise © 2026 | Save Food, Reduce Waste 🌱</p>
-            </footer>
+        </section>
 
-        </main>
 
-    </div>
-    <button id="enableNotificationsBtn" type="button">
-       🔔 Enable Desktop Notifications
+        <!-- EXPIRY ALERTS -->
+        <section id="expiry" class="page-section">
+
+            <header class="top-header">
+                <div>
+                    <h1>Expiry Alerts</h1>
+                    <p>Keep track of food that needs your attention.</p>
+                </div>
+            </header>
+
+            <section class="content-section">
+
+                <div class="section-heading">
+                    <h2>⏰ Food Expiry Reminders</h2>
+                    <span id="expiryAlertCount">0 alerts</span>
+                </div>
+
+                <div id="expiryAlerts"></div>
+
+            </section>
+
+        </section>
+
+
+        <!-- SCANNER -->
+        <section id="scanner" class="page-section">
+
+            <header class="top-header">
+                <div>
+                    <h1>Smart Food Scanner</h1>
+                    <p>Scan product barcodes and read printed expiry dates.</p>
+                </div>
+            </header>
+
+            <div class="scanner-container">
+
+                <!-- BARCODE SCANNER -->
+                <section class="scanner-card">
+
+                    <h2>📦 Barcode Scanner</h2>
+
+                    <p class="scanner-description">
+                        Point your camera at a food product barcode to find its details.
+                    </p>
+
+                    <div id="reader"></div>
+
+                    <div>
+                        <button type="button" id="startScanBtn" class="scan-button">
+                            Start Barcode Scanner
+                        </button>
+
+                        <button type="button" id="stopScanBtn" class="scan-button stop-button">
+                            Stop Scanner
+                        </button>
+                    </div>
+
+                    <p id="scanStatus" aria-live="polite">
+                        Click Start Barcode Scanner to begin.
+                    </p>
+
+                    <div class="manual-input">
+                        <h3>Enter Barcode Manually</h3>
+
+                        <input
+                            type="text"
+                            id="manualBarcode"
+                            placeholder="Enter barcode number"
+                            inputmode="numeric"
+                        >
+
+                        <button type="button" id="manualScanBtn" class="scan-button">
+                            Search Product
+                        </button>
+                    </div>
+
+                </section>
+
+
+                <!-- OCR EXPIRY SCANNER -->
+                <section class="scanner-card ocr-card">
+
+                    <h2>📅 Expiry Date Scanner</h2>
+
+                    <p class="scanner-description">
+                        Capture the printed expiry date on your food package.
+                    </p>
+
+                    <div class="ocr-camera-container">
+
+                        <video id="ocrVideo" autoplay playsinline muted></video>
+
+                        <canvas id="ocrCanvas" style="display:none;"></canvas>
+
+                    </div>
+
+                    <div class="ocr-buttons">
+
+                        <button type="button" id="startOcrCamera" class="scan-button">
+                            Open Camera
+                        </button>
+
+                        <button type="button" id="captureOcrImage" class="scan-button">
+                            Capture & Read Date
+                        </button>
+
+                        <button type="button" id="stopOcrCamera" class="scan-button stop-button">
+                            Stop Camera
+                        </button>
+
+                    </div>
+
+                    <p id="ocrStatus" aria-live="polite">
+                        Open the camera to start reading expiry dates.
+                    </p>
+
+                    <div id="ocrResult" class="ocr-result"></div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-navigation" aria-label="Main navigation">
+
+    <button type="button" class="bottom-nav-link active" data-section="dashboard">
+        <span>🏠</span>
+        <small>Home</small>
     </button>
-    <script type="module" src="./js/app.js"></script>
-    <script src="./js/pwa.js"></script>
+
+    <button type="button" class="bottom-nav-link" data-section="scanner">
+        <span>📷</span>
+        <small>Scan</small>
+    </button>
+
+    <button type="button" class="bottom-nav-link" data-section="expiry">
+        <span>⏰</span>
+        <small>Alerts</small>
+    </button>
+
+    <button type="button" class="bottom-nav-link" data-section="inventory">
+        <span>📦</span>
+        <small>Inventory</small>
+    </button>
+
+</nav>
+
+
+<!-- DESKTOP NOTIFICATIONS -->
+<button id="enableNotificationsBtn" type="button">
+    🔔 Enable Desktop Notifications
+</button>
+
+
+<!-- APPLICATION SCRIPTS -->
+<script type="module" src="./js/app.js"></script>
+<script src="./js/scanner.js"></script>
+<script src="./js/pwa.js"></script>
+
+
+<!-- SINGLE PAGE NAVIGATION -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const sections = document.querySelectorAll(".page-section");
+    const navLinks = document.querySelectorAll(
+        ".nav-link, .bottom-nav-link"
+    );
+
+    function showSection(sectionId) {
+
+        const target = document.getElementById(sectionId);
+
+        if (!target) return;
+
+        sections.forEach(section => {
+            section.classList.remove("active");
+        });
+
+        target.classList.add("active");
+
+        navLinks.forEach(link => {
+            link.classList.toggle(
+                "active",
+                link.dataset.section === sectionId
+            );
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            showSection(this.dataset.section);
+        });
+    });
+
+    document.querySelectorAll("[data-go]").forEach(button => {
+        button.addEventListener("click", function () {
+            showSection(this.dataset.go);
+        });
+    });
+
+    showSection("dashboard");
+
+});
+</script>
+
 </body>
 </html>

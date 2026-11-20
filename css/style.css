@@ -1,22 +1,5 @@
 
-/* ==========================================
-   FOODWISE - PASTEL PINTEREST AESTHETIC
-   Sage Green | Vanilla Cream | Blush Pink
-========================================== */
-
-/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
-
-
-/* ==========================================
-   GLOBAL STYLES
-========================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 :root {
     --sage: #9CAF88;
@@ -34,6 +17,12 @@
     --shadow: 0 8px 25px rgba(85, 110, 78, 0.08);
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -43,22 +32,21 @@ body {
     background: var(--cream);
     color: var(--text);
     line-height: 1.6;
+    min-height: 100vh;
 }
 
+button, input, select {
+    font-family: inherit;
+}
 
-/* ==========================================
-   MAIN LAYOUT
-========================================== */
+/* MAIN LAYOUT */
 
 .app-container {
     display: flex;
     min-height: 100vh;
 }
 
-
-/* ==========================================
-   SIDEBAR
-========================================== */
+/* SIDEBAR */
 
 .sidebar {
     width: 250px;
@@ -127,10 +115,7 @@ body {
     font-weight: 600;
 }
 
-
-/* ==========================================
-   MAIN CONTENT
-========================================== */
+/* MAIN CONTENT */
 
 .main-content {
     flex: 1;
@@ -138,12 +123,32 @@ body {
     padding: 38px 45px;
     width: calc(100% - 250px);
     max-width: 1600px;
+    min-width: 0;
 }
 
+/* SINGLE PAGE SECTIONS */
 
-/* ==========================================
-   HEADER
-========================================== */
+.page-section {
+    display: none;
+    animation: fadeIn 0.25s ease;
+}
+
+.page-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* HEADER */
 
 .top-header {
     display: flex;
@@ -175,10 +180,7 @@ body {
     box-shadow: var(--shadow);
 }
 
-
-/* ==========================================
-   DASHBOARD STATISTICS
-========================================== */
+/* DASHBOARD STATISTICS */
 
 .stats-container {
     display: grid;
@@ -233,10 +235,7 @@ body {
     color: var(--dark-sage);
 }
 
-
-/* ==========================================
-   QUICK ACTIONS
-========================================== */
+/* QUICK ACTIONS */
 
 .quick-actions {
     margin-bottom: 35px;
@@ -294,10 +293,7 @@ body {
     transform: translateY(-3px);
 }
 
-
-/* ==========================================
-   CONTENT SECTIONS
-========================================== */
+/* CONTENT SECTIONS */
 
 .content-section {
     background: var(--white);
@@ -326,18 +322,17 @@ body {
     font-weight: 700;
 }
 
+/* EXPIRY ALERTS */
 
-/* ==========================================
-   EXPIRY ALERT CARDS
-========================================== */
-
-#expiryAlerts {
+#expiryAlerts,
+#dashboardExpiryAlerts {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-#expiryAlerts > p {
+#expiryAlerts > p,
+#dashboardExpiryAlerts > p {
     background: var(--light-sage);
     color: var(--dark-sage);
     padding: 18px;
@@ -392,10 +387,7 @@ body {
     color: #A45D70;
 }
 
-
-/* ==========================================
-   INVENTORY TABLE
-========================================== */
+/* INVENTORY TABLE */
 
 .table-container {
     width: 100%;
@@ -453,10 +445,7 @@ tbody td:last-child {
     border-radius: 0 10px 10px 0;
 }
 
-
-/* ==========================================
-   DELETE BUTTON
-========================================== */
+/* DELETE BUTTON */
 
 .delete-button {
     border: none;
@@ -465,7 +454,6 @@ tbody td:last-child {
     padding: 8px 12px;
     border-radius: 9px;
     cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
     font-size: 11px;
     font-weight: 700;
     transition: 0.3s ease;
@@ -476,10 +464,7 @@ tbody td:last-child {
     transform: scale(1.05);
 }
 
-
-/* ==========================================
-   ADD FOOD FORM
-========================================== */
+/* ADD FOOD FORM */
 
 .food-form {
     display: grid;
@@ -506,7 +491,6 @@ tbody td:last-child {
     border: 1px solid #DFE6D9;
     background: #FFFCF8;
     border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     color: var(--text);
     outline: none;
@@ -529,10 +513,26 @@ tbody td:last-child {
     justify-self: start;
 }
 
+/* NOTIFICATIONS BUTTON */
 
-/* ==========================================
-   FOOTER
-========================================== */
+#enableNotificationsBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 13px 24px;
+    background: var(--sage);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#enableNotificationsBtn:hover {
+    background: var(--dark-sage);
+}
+
+/* FOOTER */
 
 footer {
     text-align: center;
@@ -541,13 +541,15 @@ footer {
     font-size: 12px;
 }
 
+/* BOTTOM NAVIGATION */
 
-/* ==========================================
-   RESPONSIVE DESIGN - TABLETS
-========================================== */
+.bottom-navigation {
+    display: none;
+}
+
+/* TABLET */
 
 @media screen and (max-width: 1100px) {
-
     .stats-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -555,18 +557,19 @@ footer {
     .main-content {
         padding: 30px;
     }
-
 }
 
-
-/* ==========================================
-   RESPONSIVE DESIGN - MOBILE
-========================================== */
+/* MOBILE */
 
 @media screen and (max-width: 700px) {
 
+    body {
+        padding-bottom: 82px;
+    }
+
     .app-container {
         display: block;
+        min-height: auto;
     }
 
     .sidebar {
@@ -575,35 +578,21 @@ footer {
         min-width: 0;
         height: auto;
         padding: 17px 15px;
+        border-right: none;
+        border-bottom: 1px solid #DCE5D3;
     }
 
     .logo {
-        margin-bottom: 15px;
+        margin-bottom: 0;
         text-align: center;
+        padding-left: 0;
     }
 
     .logo h2 {
         font-size: 24px;
     }
 
-    .sidebar nav {
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 8px;
-        padding-bottom: 5px;
-    }
-
-    .nav-link {
-        white-space: nowrap;
-        font-size: 11px;
-        padding: 10px 12px;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-        transform: none;
-    }
-
+    .sidebar nav,
     .sidebar-bottom {
         display: none;
     }
@@ -655,7 +644,8 @@ footer {
         flex-direction: column;
     }
 
-    .action-buttons a {
+    .action-buttons button {
+        width: 100%;
         text-align: center;
     }
 
@@ -690,15 +680,60 @@ footer {
         min-width: 600px;
     }
 
+    /* FIXED BOTTOM NAVIGATION */
+
+    .bottom-navigation {
+        display: flex;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        justify-content: space-around;
+        align-items: center;
+        background: rgba(255, 249, 240, 0.97);
+        border-top: 1px solid var(--border);
+        padding: 9px 5px calc(9px + env(safe-area-inset-bottom));
+        box-shadow: 0 -5px 20px rgba(69, 87, 68, 0.08);
+    }
+
+    .bottom-nav-link {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        min-width: 60px;
+        padding: 5px 8px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    .bottom-nav-link span {
+        font-size: 21px;
+    }
+
+    .bottom-nav-link small {
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .bottom-nav-link.active {
+        color: var(--dark-sage);
+        background: var(--light-sage);
+    }
+
+    #enableNotificationsBtn {
+        margin-bottom: 20px;
+    }
 }
 
-
-/* ==========================================
-   SMALL MOBILE SCREENS
-========================================== */
+/* SMALL MOBILE */
 
 @media screen and (max-width: 380px) {
-
     .stats-container {
         grid-template-columns: 1fr;
     }
@@ -706,22 +741,4 @@ footer {
     .stat-card {
         padding: 20px;
     }
-
-}
-
-#enableNotificationsBtn {
-    display: block;
-    margin: 20px auto;
-    padding: 13px 24px;
-    background-color: #9CAF88;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-#enableNotificationsBtn:hover {
-    background-color: #607B58;
 }

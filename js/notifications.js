@@ -7,15 +7,28 @@ import {
     onMessage
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging.js";
 
-// Initialize Firebase Messaging
 const messaging = getMessaging(app);
 
-// Your Firebase VAPID public key
-const vapidKey = "PASTE_YOUR_VAPID_PUBLIC_KEY_HERE";
+// Replace this placeholder with your actual Firebase Web Push Key Pair
+const vapidKey = "BBJMKgEIFkAuz47E8qI20HSbxPrdYmYl43iM_BXH-FzyVBi_ZwB15RX9SVKz6I5wK3pYp-TBHABMPHRtxuEdH4w";
 
-// Enable notifications
 export async function enableNotifications() {
     try {
+        if (!("Notification" in window)) {
+            alert("This browser does not support notifications.");
+            return;
+        }
+
+        if (!("serviceWorker" in navigator)) {
+            alert("Service workers are not supported by this browser.");
+            return;
+        }
+
+        if (!vapidKey || vapidKey.includes("PASTE_YOUR")) {
+            alert("Please add your Firebase VAPID public key first.");
+            return;
+        }
+
         const permission = await Notification.requestPermission();
 
         if (permission !== "granted") {
@@ -26,6 +39,8 @@ export async function enableNotifications() {
         const registration = await navigator.serviceWorker.register(
             "./firebase-messaging-sw.js"
         );
+
+        await navigator.serviceWorker.ready;
 
         const token = await getToken(messaging, {
             vapidKey: vapidKey,
@@ -45,14 +60,13 @@ export async function enableNotifications() {
     }
 }
 
-// Receive notifications while FoodWise is open
-onMessage(messaging, function(payload) {
+onMessage(messaging, (payload) => {
     console.log("FoodWise notification received:", payload);
 
     const title = payload.notification?.title || "FoodWise Reminder";
     const body = payload.notification?.body || "Check your food inventory!";
 
     if (Notification.permission === "granted") {
-        new Notification(title, { body: body });
+        new Notification(title, { body });
     }
 });

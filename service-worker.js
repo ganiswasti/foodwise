@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "foodwise-v1";
+const CACHE_NAME = "foodwise-v2";
 
 const FILES_TO_CACHE = [
     "./",
@@ -7,17 +7,23 @@ const FILES_TO_CACHE = [
     "./index.html",
     "./login.html",
     "./register.html",
-    "./scanner.html",
     "./manifest.json",
     "./css/style.css",
     "./css/welcome.css",
     "./css/login.css",
     "./css/scanner.css",
+    "./js/app.js",
+    "./js/firebase-config.js",
+    "./js/firebase.js",
+    "./js/auth.js",
+    "./js/scanner.js",
+    "./js/notifications.js",
+    "./js/pwa.js",
     "./icons/icon-192.png",
     "./icons/icon-512.png"
 ];
 
-// Install service worker and cache app files
+// Install updated service worker
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
@@ -28,7 +34,7 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
 });
 
-// Activate service worker
+// Activate updated service worker
 self.addEventListener("activate", (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -43,22 +49,32 @@ self.addEventListener("activate", (event) => {
     self.clients.claim();
 });
 
-// Fetch cached files when offline
+// Always try the latest local files first
 self.addEventListener("fetch", (event) => {
+
     if (event.request.method !== "GET") return;
 
     const url = new URL(event.request.url);
 
-    // Do not cache Firebase or external API requests
     if (url.origin !== self.location.origin) return;
 
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
+        fetch(event.request)
+            .then((response) => {
 
-            return fetch(event.request);
-        })
+                if (response && response.ok) {
+                    const responseClone = response.clone();
+
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request);
+            })
     );
+
 });

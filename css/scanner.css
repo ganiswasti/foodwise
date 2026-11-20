@@ -1,92 +1,109 @@
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+/* ==========================================
+   FOODWISE - INTEGRATED SCANNER STYLES
+   Sage Green | Vanilla Cream | Blush Pink
+========================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'DM Sans', sans-serif;
-    background: #FFF9F0;
-    color: #455744;
-    min-height: 100vh;
-}
-
-.scanner-header {
-    background: #E7EDDF;
-    padding: 22px 7%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 27px;
-    color: #607B58;
-}
-
-.back-link {
-    text-decoration: none;
-    color: #607B58;
-    font-weight: 600;
-}
+/* SCANNER LAYOUT */
 
 .scanner-container {
-    max-width: 850px;
-    margin: 45px auto;
-    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 25px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.scanner-card {
+    width: 100%;
+    background: #FFFFFF;
+    padding: 30px;
+    border-radius: 22px;
+    border: 1px solid #E7E9DF;
+    box-shadow: 0 8px 25px rgba(69, 87, 68, 0.07);
     text-align: center;
 }
 
-.scanner-container h1 {
+.scanner-card h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 34px;
+    color: #607B58;
+    font-size: 25px;
     margin-bottom: 12px;
 }
 
 .scanner-description {
     color: #899383;
-    margin-bottom: 30px;
+    font-size: 14px;
     line-height: 1.7;
+    margin-bottom: 25px;
 }
 
-.scanner-card {
-    background: white;
-    padding: 30px;
-    border-radius: 22px;
-    border: 1px solid #E7E9DF;
-    box-shadow: 0 8px 25px rgba(69, 87, 68, 0.07);
-}
+
+/* BARCODE SCANNER */
 
 #reader {
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     overflow: hidden;
     border-radius: 15px;
+    border: 1px solid #E7E9DF;
+    background: #FFF9F0;
 }
 
 #reader video {
+    width: 100%;
     border-radius: 12px;
 }
+
+#reader img {
+    max-width: 100%;
+}
+
+#reader button {
+    background: #9CAF88;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+#reader select {
+    padding: 9px;
+    border: 1px solid #E7E9DF;
+    border-radius: 8px;
+    margin: 8px;
+    max-width: 100%;
+}
+
+
+/* SCANNER BUTTONS */
 
 .scan-button {
     background: #9CAF88;
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 14px 25px;
-    font-size: 15px;
+    padding: 13px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    margin: 12px 5px;
+    margin: 8px 5px;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .scan-button:hover {
     background: #607B58;
+    transform: translateY(-2px);
+}
+
+.scan-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .stop-button {
@@ -97,10 +114,30 @@ body {
     background: #A96978;
 }
 
+
+/* BARCODE STATUS */
+
+#scanStatus {
+    margin-top: 18px;
+    color: #607B58;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* MANUAL BARCODE INPUT */
+
 .manual-input {
     margin-top: 25px;
     padding-top: 22px;
     border-top: 1px solid #E7E9DF;
+}
+
+.manual-input h3 {
+    color: #455744;
+    font-size: 16px;
+    margin-bottom: 12px;
 }
 
 .manual-input input {
@@ -109,40 +146,22 @@ body {
     padding: 13px;
     border: 1px solid #E7E9DF;
     border-radius: 10px;
-    font-size: 15px;
-    margin: 12px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: #FFF9F0;
+    color: #455744;
+    outline: none;
 }
 
-#scanStatus {
-    margin-top: 18px;
-    color: #607B58;
-    font-weight: 600;
+.manual-input input:focus {
+    border-color: #9CAF88;
 }
 
-@media (max-width: 600px) {
-    .scanner-header {
-        padding: 18px 5%;
-    }
 
-    .scanner-container {
-        margin: 25px auto;
-    }
-
-    .scanner-container h1 {
-        font-size: 27px;
-    }
-
-    .scanner-card {
-        padding: 18px;
-    }
-}
-
-/* ===================================
-   FOODWISE - OCR EXPIRY SCANNER
-=================================== */
+/* OCR EXPIRY SCANNER */
 
 .ocr-card {
-    margin-top: 30px;
+    margin-top: 0;
 }
 
 .ocr-camera-container {
@@ -165,6 +184,13 @@ body {
     display: block;
 }
 
+#ocrCanvas {
+    display: none;
+}
+
+
+/* OCR BUTTONS */
+
 .ocr-buttons {
     display: flex;
     justify-content: center;
@@ -172,16 +198,20 @@ body {
     gap: 8px;
 }
 
+
+/* OCR STATUS AND RESULTS */
+
 #ocrStatus {
     margin-top: 18px;
     color: #607B58;
     font-weight: 600;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.7;
 }
 
 .ocr-result {
     margin-top: 18px;
-    padding: 15px;
+    padding: 18px;
     background: #E7EDDF;
     border-radius: 12px;
     color: #455744;
@@ -189,13 +219,51 @@ body {
     display: none;
 }
 
+
+/* MOBILE RESPONSIVENESS */
+
 @media (max-width: 600px) {
+
+    .scanner-container {
+        margin: 15px auto;
+        gap: 18px;
+    }
+
+    .scanner-card {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .scanner-card h2 {
+        font-size: 22px;
+    }
+
+    .scanner-description {
+        font-size: 13px;
+    }
+
+    .scan-button {
+        width: 100%;
+        margin: 6px 0;
+    }
+
     .ocr-buttons {
         flex-direction: column;
     }
 
-    .ocr-buttons .scan-button {
-        width: 100%;
-        margin: 5px 0;
+    #reader {
+        max-width: 100%;
+    }
+
+    .ocr-camera-container {
+        min-height: 180px;
+    }
+
+    #ocrVideo {
+        max-height: 280px;
+    }
+
+    .manual-input input {
+        max-width: 100%;
     }
 }
